@@ -1,0 +1,17 @@
+.idea/
+.idea_modules/
+node_modules/
+nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+vendor/
+codecept.phar
+codeception.yml
+c3.php
+composer.lock
+phpDocumentor.phar
+apigen.phar
+tests/

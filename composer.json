@@ -1,0 +1,21 @@
+{
+  "name": "name of package",
+  "description": "description of package",
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "": "package/src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "": "package/tests/"
+    }
+  },
+  "require": {
+
+  },
+  "require-dev": {
+
+  }
+}
