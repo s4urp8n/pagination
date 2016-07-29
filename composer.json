@@ -1,6 +1,6 @@
 {
-  "name": "name of package",
-  "description": "description of package",
+  "name": "zver/pagination",
+  "description": "universal customizable pagination",
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {

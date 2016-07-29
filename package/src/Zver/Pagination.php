@@ -9,7 +9,7 @@ namespace Zver
         protected $queryPageParam = 'page';
         protected $itemsPerPage = 10;
         protected $source = [];
-        protected $totalItemsCount = [];
+        protected $totalItemsCount = 0;
         protected $paramsRemove = [];
         
         public function removeQueryParam($paramName)
@@ -40,7 +40,7 @@ namespace Zver
             throw new \InvalidArgumentException('Source argument must implements PaginationInterface or be an array');
         }
         
-        protected function getItems($offset, $length)
+        public function getItems($offset, $length)
         {
             if ($this->source instanceof PaginationInterface)
             {
@@ -57,8 +57,6 @@ namespace Zver
         
         public static function create()
         {
-            static::updateCurrentUrl();
-            
             return new static();
         }
         
@@ -78,7 +76,7 @@ namespace Zver
             for ($i = 0; $i < $this->getPagesCount(); $i++)
             {
                 $number = $i + 1;
-                $pages[] = new Page($number, $this->getPageUrl($number), $number == $current);
+                $pages[] = Page::create($number, $this->getPageUrl($number), $number == $current);
             }
             
             if (count($pages) > 1)
