@@ -8,26 +8,30 @@ $config = include 'config.php';
 
 $testResult = null;
 
-$webServerRoot = __DIR__ . DIRECTORY_SEPARATOR . 'package' . DIRECTORY_SEPARATOR . 'pages';
-$webServerRouter = __DIR__ . DIRECTORY_SEPARATOR . 'router.php';
-$webServerCommand = 'php -S ' . $config['server'] . ' -t "' . $webServerRoot . '" "' . $webServerRouter . '"';
-
-echo $webServerCommand . "\n";
-
-$webServerProcess = proc_open(
-    $webServerCommand, [
-    ["pipe", "r"],
-    ["pipe", "w"],
-    ["pipe", "w"],
-], $pipesWebServer
-);
-
-echo "Webserver loading...";
-while (!is_resource($webServerProcess))
+if (PackageTemplate\isPagesExists())
 {
-    echo ".";
+    
+    $webServerRoot = __DIR__ . DIRECTORY_SEPARATOR . 'package' . DIRECTORY_SEPARATOR . 'pages';
+    $webServerRouter = __DIR__ . DIRECTORY_SEPARATOR . 'router.php';
+    $webServerCommand = 'php -S ' . $config['server'] . ' -t "' . $webServerRoot . '" "' . $webServerRouter . '"';
+    
+    echo $webServerCommand . "\n";
+    
+    $webServerProcess = proc_open(
+        $webServerCommand, [
+        ["pipe", "r"],
+        ["pipe", "w"],
+        ["pipe", "w"],
+    ], $pipesWebServer
+    );
+    
+    echo "Webserver loading...";
+    while (!is_resource($webServerProcess))
+    {
+        echo ".";
+    }
+    echo "\n";
 }
-echo "\n";
 
 $commands = [
     [
@@ -72,13 +76,19 @@ $commands = [
         'description' => 'Testing...',
         'callback'    => function () use ($config, &$testResult)
         {
-            $testCommand = 'php codecept.phar run acceptance';
-            passthru($testCommand, $acceptanceResult);
+            if (PackageTemplate\isPagesExists())
+            {
+                $testCommand = 'php codecept.phar run acceptance';
+                passthru($testCommand, $acceptanceResult);
+            }
             
             $testCommand = 'php codecept.phar run ' . $config['codeceptionArguments'];
             passthru($testCommand, $testResult);
             
-            $testResult = intval($acceptanceResult) + intval($testResult);
+            if (PackageTemplate\isPagesExists())
+            {
+                $testResult = intval($acceptanceResult) + intval($testResult);
+            }
             
         },
     ],
@@ -93,9 +103,12 @@ $commands = [
 //Executing commands and show output
 PackageTemplate\executeCommands($commands);
 
-$pstatus = proc_get_status($webServerProcess);
-$pid = $pstatus['pid'];
-PackageTemplate\kill($pid);
+if (PackageTemplate\isPagesExists())
+{
+    $pstatus = proc_get_status($webServerProcess);
+    $pid = $pstatus['pid'];
+    PackageTemplate\kill($pid);
+}
 
 echo 'Exit code: [' . $testResult . "]\n";
 

@@ -3,6 +3,11 @@
 namespace PackageTemplate
 {
     
+    function isPagesExists()
+    {
+        return file_exists('package' . DIRECTORY_SEPARATOR . 'pages');
+    }
+    
     function page($page)
     {
         return "http://127.0.0.1:4444/" . $page . '.php';
