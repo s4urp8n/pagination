@@ -2,22 +2,17 @@
 namespace Zver
 {
     
+    use Zver\Exceptions\Pagination\CurrentPageCallbackNotSetException;
+    use Zver\Exceptions\Pagination\PageUrlCallbackNotSetException;
+    
     class Pagination
     {
         
-        protected static $currentUrl = null;
-        protected $queryPageParam = 'page';
         protected $itemsPerPage = 10;
         protected $source = [];
         protected $totalItemsCount = 0;
-        protected $paramsRemove = [];
-        
-        public function removeQueryParam($paramName)
-        {
-            $this->paramsRemove[] = $paramName;
-            
-            return $this;
-        }
+        protected $currentPageCallback = null;
+        protected $pageUrlCallback = null;
         
         public function setItems($source)
         {
@@ -87,78 +82,9 @@ namespace Zver
             return $this;
         }
         
-        protected static function updateCurrentUrl()
-        {
-            $server = $_SERVER;
-            
-            $ssl = (!empty($server['HTTPS']) && $server['HTTPS'] == 'on');
-            
-            $sp = strtolower($server['SERVER_PROTOCOL']);
-            
-            $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl)
-                    ? 's'
-                    : '');
-            
-            $port = $server['SERVER_PORT'];
-            
-            $port = ((!$ssl && $port == '80') || ($ssl && $port == '443'))
-                ? ''
-                : ':' . $port;
-            
-            $host = (isset($server['HTTP_X_FORWARDED_HOST']))
-                ? $server['HTTP_X_FORWARDED_HOST']
-                : (isset($server['HTTP_HOST'])
-                    ? $server['HTTP_HOST']
-                    : null);
-            
-            $host = isset($host)
-                ? $host
-                : $server['SERVER_NAME'] . $port;
-            
-            static::$currentUrl = explode('?', $protocol . '://' . $host . $server['REQUEST_URI'])[0];
-        }
-        
-        protected function getPageUrl($pageNumber)
-        {
-            foreach ($this->paramsRemove as $param)
-            {
-                if (isset($_GET[$param]))
-                {
-                    unset($_GET[$param]);
-                }
-            }
-            
-            if (isset($_GET[$this->queryPageParam]))
-            {
-                unset($_GET[$this->queryPageParam]);
-            }
-            
-            if ($pageNumber != 1)
-            {
-                $_GET[$this->queryPageParam] = $pageNumber;
-            }
-            
-            $query = http_build_query($_GET);
-            
-            if (!empty($query))
-            {
-                return static::$currentUrl . '?' . $query;
-            }
-            
-            return static::$currentUrl;
-            
-        }
-        
         protected function __construct()
         {
             
-        }
-        
-        public function setQueryParamName($name)
-        {
-            $this->queryPageParam = $name;
-            
-            return $this;
         }
         
         public function setItemsPerPage($itemsPerPage)
@@ -173,11 +99,6 @@ namespace Zver
             $this->itemsPerPage = $itemsPerPage;
             
             return $this;
-        }
-        
-        public function getQueryParamName()
-        {
-            return $this->queryPageParam;
         }
         
         public function getItemsPerPage()
@@ -200,28 +121,34 @@ namespace Zver
             return ($this->getCurrentPage() - 1) * $this->getItemsPerPage();
         }
         
-        protected function getCurrentPage()
+        public function setCurrentPageCallback(callable  $callback)
         {
-            if (!empty($_GET[$this->getQueryParamName()]))
-            {
-                $queryPage = intval($_GET[$this->getQueryParamName()]);
-                
-                if (is_numeric($queryPage))
-                {
-                    if ($queryPage > $this->getPagesCount())
-                    {
-                        return $this->getPagesCount();
-                    }
-                    
-                    if ($queryPage >= 1)
-                    {
-                        return $queryPage;
-                    }
-                }
-            }
-            
-            return 1;
+            $this->currentPageCallback = $callback;
         }
         
+        public function setPageUrlCallback(callable  $callback)
+        {
+            $this->pageUrlCallback = $callback;
+        }
+        
+        public function getCurrentPage()
+        {
+            if (!is_callable($this->currentPageCallback))
+            {
+                throw new CurrentPageCallbackNotSetException();
+            }
+            
+            return call_user_func($this->currentPageCallback);
+        }
+        
+        public function getPageUrl($number)
+        {
+            if (!is_callable($this->pageUrlCallback))
+            {
+                throw new PageUrlCallbackNotSetException();
+            }
+            
+            return call_user_func($this->pageUrlCallback, $number);
+        }
     }
 }

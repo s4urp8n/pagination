@@ -1,13 +1,11 @@
 <?php
-namespace Zver
+namespace Zver;
+
+interface PaginationInterface
 {
     
-    interface PaginationInterface
-    {
-        
-        public function getPaginationItems($offset, $length);
-        
-        public function getPaginationItemsCount();
-        
-    }
+    public function getPaginationItems($offset, $length);
+    
+    public function getPaginationItemsCount();
+    
 }
