@@ -185,4 +185,32 @@ class PaginationUnitCest
         ];
     }
     
+    protected function chainableTest(UnitTester $I)
+    {
+        
+        Pagination::create()
+                  ->setCurrentPageCallback(
+                      function ()
+                      {
+                      }
+                  )
+                  ->setPageUrlCallback(
+                      function ()
+                      {
+                      }
+                  )
+                  ->setItems([1, 2, 3, 4])
+                  ->setItemsPerPage(1)
+                  ->showItems(
+                      function ()
+                      {
+                      }
+                  )
+                  ->showPages(
+                      function ()
+                      {
+                      }
+                  );
+        
+    }
 }

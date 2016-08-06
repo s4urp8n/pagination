@@ -124,11 +124,15 @@ namespace Zver
         public function setCurrentPageCallback(callable  $callback)
         {
             $this->currentPageCallback = $callback;
+            
+            return $this;
         }
         
         public function setPageUrlCallback(callable  $callback)
         {
             $this->pageUrlCallback = $callback;
+            
+            return $this;
         }
         
         public function getCurrentPage()
