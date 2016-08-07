@@ -30,7 +30,7 @@ Pagination::create()
           * Here you must define URL generation callback.
           */
           ->setPageUrlCallback(
-              function ($number) use ($currentCategory)
+              function ($number)
               {
                   /**
                   * For example
