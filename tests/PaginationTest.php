@@ -62,7 +62,7 @@ class PaginationTest extends PHPUnit\Framework\TestCase
                  * Check same type of object items and pagination items
                  */
                 $pagination->showItems(
-                    function ($items) use ($object, $I, $i) {
+                    function ($items) use ($object, $i) {
                         $this->assertSame(
                             gettype(
                                 is_array($object)
@@ -74,7 +74,7 @@ class PaginationTest extends PHPUnit\Framework\TestCase
                 );
 
                 $pagination->showPages(
-                    function ($pages, Pagination $pagination) use ($object, $I, $i, $pageUrlFunction) {
+                    function ($pages, Pagination $pagination) use ($object, $i, $pageUrlFunction) {
                         $this->assertTrue(is_array($pages));
 
                         foreach ($pages as $page) {
