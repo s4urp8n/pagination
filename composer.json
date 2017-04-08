@@ -1,21 +1,26 @@
 {
-  "name": "zver/pagination",
-  "description": "universal customizable pagination",
+  "name": "zver/package-template",
+  "description": "this is universal package template for development and testing and composer distribution",
   "minimum-stability": "stable",
+  "config": {
+    "optimize-autoloader": true
+  },
   "autoload": {
     "psr-4": {
-      "": "package/src/"
-    }
+      "": "src/"
+    },
+    "files": [
+      "src/Functions.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
-      "": "package/tests/"
+      "": "tests/"
     }
   },
   "require": {
-
+    "zver/common": "^3.0"
   },
   "require-dev": {
-
   }
 }

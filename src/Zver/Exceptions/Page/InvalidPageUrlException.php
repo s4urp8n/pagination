@@ -1,9 +1,9 @@
 <?php
-namespace Zver\Exceptions\Page
-{
-    
+
+namespace Zver\Exceptions\Page {
+
     class InvalidPageUrlException extends \Exception
     {
-        
+
     }
 }

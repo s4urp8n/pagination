@@ -1,9 +1,9 @@
 <?php
-namespace Zver\Exceptions\Pagination
-{
-    
+
+namespace Zver\Exceptions\Pagination {
+
     class PageUrlCallbackNotSetException extends \Exception
     {
-        
+
     }
 }
