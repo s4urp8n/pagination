@@ -55,9 +55,7 @@ namespace Zver {
 
         public function setUrl($url)
         {
-            $url = filter_var($url, FILTER_VALIDATE_URL);
-
-            if (!empty($url)) {
+            if (preg_match('#\/\w+#i', $url) === 1) {
                 $this->url = $url;
             } else {
                 throw new InvalidPageUrlException('"' . $url . '" is not a valid URL');
