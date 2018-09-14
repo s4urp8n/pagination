@@ -160,5 +160,19 @@ namespace Zver {
 
             return call_user_func($this->pageUrlCallback, $number);
         }
+
+        public function haveNextPage()
+        {
+            return ($this->getPagesCount() > 1)
+                   &&
+                   ($this->getCurrentPage() <= $this->getPagesCount());
+        }
+
+        public function havePrevPage()
+        {
+            return ($this->getPagesCount() > 1)
+                   &&
+                   ($this->getCurrentPage() != 1);
+        }
     }
 }
