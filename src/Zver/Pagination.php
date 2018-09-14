@@ -33,8 +33,17 @@ namespace Zver {
             throw new \InvalidArgumentException('Source argument must implements PaginationInterface or be an array');
         }
 
-        public function getItems($offset, $length)
+        public function getItems($offset = null, $length = null)
         {
+
+            if (is_null($offset)) {
+                $offset = $this->getOffset();
+            }
+
+            if (is_null($length)) {
+                $length = $this->getItemsPerPage();
+            }
+
             if ($this->source instanceof PaginationInterface) {
                 return $this->source->getPaginationItems($offset, $length);
             }
