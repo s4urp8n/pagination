@@ -70,7 +70,17 @@ namespace Zver {
 
         public function showPages(callable $callback)
         {
+            $pages = $this->getPages();
 
+            if (count($pages) > 1) {
+                $callback($pages, $this);
+            }
+
+            return $this;
+        }
+
+        public function getPages()
+        {
             $pages = [];
             $number = 0;
             $current = $this->getCurrentPage();
@@ -79,11 +89,7 @@ namespace Zver {
                 $pages[] = Page::create($number, $this->getPageUrl($number), $number == $current);
             }
 
-            if (count($pages) > 1) {
-                $callback($pages, $this);
-            }
-
-            return $this;
+            return $pages;
         }
 
         protected function __construct()
