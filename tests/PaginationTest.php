@@ -37,11 +37,6 @@ class PaginationTest extends PHPUnit\Framework\TestCase
             foreach ($this->_generateObjects($i) as $object) {
 
                 /**
-                 * Same current url callback
-                 */
-                $this->assertSame($currentPageFunction(), $pagination->getCurrentPage());
-
-                /**
                  * Same page url callback
                  */
                 $this->assertSame($pageUrlFunction($i), $pagination->getPageUrl($i));

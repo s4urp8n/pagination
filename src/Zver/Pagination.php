@@ -149,7 +149,17 @@ namespace Zver {
                 throw new CurrentPageCallbackNotSetException();
             }
 
-            return call_user_func($this->currentPageCallback);
+            $page = call_user_func($this->currentPageCallback);
+
+            if (!is_numeric($page) || empty($page)) {
+                return 1;
+            }
+
+            if ($page > $this->getPagesCount()) {
+                $page = $this->getPagesCount();
+            }
+
+            return $page;
         }
 
         public function getPageUrl($number)
