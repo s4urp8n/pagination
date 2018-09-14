@@ -1,6 +1,6 @@
 {
-  "name": "zver/package-template",
-  "description": "this is universal package template for development and testing and composer distribution",
+  "name": "zver/pagination",
+  "description": "this is universal pagination package",
   "minimum-stability": "stable",
   "config": {
     "optimize-autoloader": true
