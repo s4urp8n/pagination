@@ -14,23 +14,10 @@ class PageTest extends PHPUnit\Framework\TestCase
             ->setNumber(0);
     }
 
-    public function testExceptions2()
-    {
-        $this->expectException('Zver\Exceptions\Page\InvalidPageUrlException');
-        Page::create()
-            ->setUrl(0);
-    }
-
     public function testExceptions3()
     {
         $this->expectException('Zver\Exceptions\Page\InvalidPageNumberException');
         Page::create(0);
-    }
-
-    public function testExceptions4()
-    {
-        $this->expectException('Zver\Exceptions\Page\InvalidPageUrlException');
-        Page::create(1, 'd333');
     }
 
     public function testSettersAndGetters()
