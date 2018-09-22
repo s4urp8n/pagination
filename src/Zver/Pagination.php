@@ -184,5 +184,15 @@ namespace Zver {
                    &&
                    ($this->getCurrentPage() != 1);
         }
+
+        public function getNextPage()
+        {
+            return $this->getPages()[$this->getCurrentPage()];
+        }
+
+        public function getPrevPage()
+        {
+            return $this->getPages()[$this->getCurrentPage() - 2];
+        }
     }
 }
