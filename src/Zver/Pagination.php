@@ -175,7 +175,7 @@ namespace Zver {
         {
             return ($this->getPagesCount() > 1)
                    &&
-                   ($this->getCurrentPage() <= $this->getPagesCount());
+                   ($this->getCurrentPage() < $this->getPagesCount());
         }
 
         public function havePrevPage()
